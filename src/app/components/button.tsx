@@ -2,7 +2,7 @@ import React from "react";
 
 interface buttonType {
   text: string;
-  click: () => void;
+  click?: () => void;
 }
 
 export default function Button({ text, click }: buttonType) {
