@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         />
       </div>
 
-      <div className="h-full flex items-center justify-center">{children}</div>
+      <div className="h-full w-[554px] place-self-center flex items-center justify-center">{children}</div>
     </div>
   );
 }

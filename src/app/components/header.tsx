@@ -28,7 +28,7 @@ export default function Header() {
               alt="logo"
               className="w-[40px] h-[40px] rounded-full object-cover"
             />
-            <IoIosArrowDown className=" text-[20px]" />
+            <IoIosArrowDown />
           </div>
         </div>
       ) : (

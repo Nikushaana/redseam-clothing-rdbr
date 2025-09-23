@@ -4,6 +4,10 @@
   --color-myRed: #FF4000;
   --color-myDarkBlue: #10151F;
   --color-myDarkBlue2: #3E424A;
+  --color-myDarkGrey: #212B36;
+  --color-myGrey2: #E1DFE1;
+  --color-myGrey: #F8F6F7;
+  --color-myGreen: #318A1D;
 
   --font-poppins: var(--font-poppins), sans-serif;
 }
