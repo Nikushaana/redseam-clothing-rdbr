@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Input from "./input";
-import Button from "./button";
 import { VscSettings } from "react-icons/vsc";
+import Input from "../inputs/input";
+import Button from "../button";
 
 interface FilterProps {
   from: string;
@@ -67,9 +67,11 @@ export default function Filter({ from, to, setFrom, setTo }: FilterProps) {
             />
             <Input text="To" name="to" value={localTo} setValue={setLocalTo} />
           </div>
-          <div className="self-end w-[124px]">
-            <Button text="Apply" click={handleApply} />
-          </div>
+          <Button
+            text="Apply"
+            click={handleApply}
+            className="self-end text-[14px] h-[41px] w-[124px]"
+          />
         </div>
       )}
     </div>

@@ -1,11 +1,11 @@
 "use client";
 
-import Card from "./components/card";
 import Pagination from "./components/pagination";
-import Filter from "./components/filter";
-import SortBy from "./components/sort-by";
 import { BsXLg } from "react-icons/bs";
 import { useState } from "react";
+import Filter from "./components/filter components/filter";
+import SortBy from "./components/filter components/sort-by";
+import Card from "./components/cards/card";
 
 export default function Home() {
   const [filterProductsValues, setFilterProductsValues] = useState({

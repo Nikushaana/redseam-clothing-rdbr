@@ -1,7 +1,7 @@
 import React from "react";
 import { BsXLg } from "react-icons/bs";
 import { IoCheckmarkOutline } from "react-icons/io5";
-import Button from "./button";
+import Button from "../button";
 
 export default function Success() {
   return (
@@ -20,9 +20,7 @@ export default function Success() {
       <p className="text-[14px] text-myDarkBlue2 mt-[16px]">
         Your order is placed successfully!
       </p>
-      <div className="w-[214px] mt-[74px]">
-        <Button text="Continue shopping" />
-      </div>
+      <Button text="Continue shopping" className="w-[214px] h-[41px] text-[14px] mt-[74px]" />
     </div>
   );
 }

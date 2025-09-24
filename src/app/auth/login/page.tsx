@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/app/components/button";
-import Input from "@/app/components/input";
+import Input from "@/app/components/inputs/input";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -36,9 +36,7 @@ export default function Page() {
         value={loginValues.password}
         setValue={(val: string) => handleChange("password", val)}
       />
-      <div className="mt-[22px]">
-        <Button text="Log in" />
-      </div>
+      <Button text="Log in" className="mt-[22px] text-[14px] h-[41px] w-full" />
       <p className="text-center text-myDarkBlue2 font-normal text-[14px]">
         Not a member?{" "}
         <span

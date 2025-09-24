@@ -1,17 +1,35 @@
 import React from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { HiOutlineShoppingCart } from "react-icons/hi";
 
-interface buttonType {
+interface buttonProps {
+  loading?: boolean;
   text: string;
   click?: () => void;
+  className?: string;
 }
 
-export default function Button({ text, click }: buttonType) {
+export default function Button({
+  loading,
+  text,
+  click,
+  className,
+}: buttonProps) {
   return (
-    <h1
+    <div
       onClick={click}
-      className="w-full h-[41px] flex items-center justify-center cursor-pointer bg-myRed text-white rounded-[10px] text-[14px] font-normal"
+      className={`${className} ${
+        loading && "pointer-events-none opacity-[0.5]"
+      } flex items-center gap-[10px] justify-center cursor-pointer bg-myRed text-white rounded-[10px] font-normal`}
     >
-      {text}
-    </h1>
+      {loading ? (
+        <AiOutlineLoading3Quarters className="animate-spin" />
+      ) : (
+        <>
+          {text === "Add to cart" && <HiOutlineShoppingCart />}
+          <h1>{text}</h1>
+        </>
+      )}
+    </div>
   );
 }

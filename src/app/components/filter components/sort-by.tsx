@@ -3,12 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
-interface sortByType {
+interface sortByProps {
   value: string;
   setValue: (val: string) => void;
 }
 
-export default function SortBy({ value, setValue }: sortByType) {
+export default function SortBy({ value, setValue }: sortByProps) {
   const sortByRef = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState(false);
 

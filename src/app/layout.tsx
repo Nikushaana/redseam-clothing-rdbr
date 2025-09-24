@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import Header from "./components/header";
-import Success from "./components/success";
+import Cart from "./components/modals/cart";
+import Success from "./components/modals/success";
+import { ToastContainer } from "react-toastify";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,6 +29,8 @@ export default function RootLayout({
           <Header />
           {children}
           <Success />
+          <ToastContainer />
+          <Cart />
         </div>
       </body>
     </html>

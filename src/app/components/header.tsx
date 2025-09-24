@@ -1,5 +1,6 @@
 "use client";
 
+import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { BsFillPersonFill } from "react-icons/bs";
@@ -8,6 +9,7 @@ import { IoIosArrowDown } from "react-icons/io";
 
 export default function Header() {
   const router = useRouter();
+  const { openCart } = useCartStore();
   return (
     <div className="px-[100px] flex items-center justify-between h-[80px]">
       <img
@@ -20,7 +22,10 @@ export default function Header() {
       />
       {false ? (
         <div className="flex items-center gap-[20px]">
-          <HiShoppingCart className="cursor-pointer text-[24px]" />
+          <HiShoppingCart
+            onClick={openCart}
+            className="cursor-pointer text-[24px]"
+          />
           <div className="flex items-center gap-[4px] cursor-pointer">
             <img
               onClick={() => {}}
