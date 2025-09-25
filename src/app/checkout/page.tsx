@@ -74,7 +74,7 @@ export default function page() {
             />
           </div>
         </div>
-        <div className="w-[460px]">
+        <div className="w-[460px] h-[635px]">
           <CartContent isCheckout={true} checkoutValues={checkoutValues}/>
         </div>
       </div>

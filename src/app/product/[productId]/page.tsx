@@ -80,6 +80,10 @@ export default function Page({ params }: ProductDetailsPageProps) {
         })
         .then((res: any) => {
           fetchCart();
+          toast.success("Add in Cart", {
+            position: "top-right",
+            autoClose: 3000,
+          });
         })
         .catch((error) => {
           toast.error("Failed to add in Cart", {

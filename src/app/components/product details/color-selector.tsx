@@ -28,7 +28,7 @@ export default function ColorSelector({
           <div
             key={color}
             onClick={() => setValue(color)}
-            className={`w-[48px] aspect-square rounded-full border-[1px] cursor-pointer duration-100 ${
+            className={`w-[48px] aspect-square rounded-full border-[1px] cursor-pointer duration-100 shadow ${
               value === color ? "p-[3px]" : "p-0"
             }`}
             style={{ borderColor: color }}
