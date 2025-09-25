@@ -47,8 +47,6 @@ export default function Home() {
   ]);
 
   useEffect(() => {
-    if (!user?.id) return;
-
     setIsLoading(true);
     axiosClient
       .get(
@@ -61,7 +59,7 @@ export default function Home() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [user?.id, filterProductsValues]);
+  }, [filterProductsValues]);
 
   return (
     <div className="px-[100px] my-[72px]">
@@ -90,10 +88,11 @@ export default function Home() {
         </div>
       </div>
 
-      {filterProductsValues.from && filterProductsValues.to && (
+      {(filterProductsValues.from || filterProductsValues.to) && (
         <div className="mt-[6px] h-[37px] flex items-center place-self-start gap-[6px] rounded-[50px] pr-[10px] pl-[16px] border-[1px] border-myGrey2">
           <p className="text-[14px] font-normal">
-            Price: {filterProductsValues.from}-{filterProductsValues.to}
+            Price: {filterProductsValues.from || 0}-
+            {filterProductsValues.to || "more"}
           </p>
           <BsXLg
             onClick={() => {

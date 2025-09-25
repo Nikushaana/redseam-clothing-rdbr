@@ -38,3 +38,19 @@ interface ProductsResponse {
   links: PaginationLinks;
   meta: PaginationMeta;
 }
+
+interface CartProduct {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  total_price: number;
+  color: string;
+  size: string;
+  cover_image: string;
+  images: string[];
+  available_colors: string[];
+  available_sizes: string[];
+  release_year: string;
+}

@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../components/inputs/input";
 import CartContent from "../components/cart/cart-content";
+import { useUserStore } from "@/store/userStore";
 
 export default function page() {
+  const { user } = useUserStore();
+
   const [checkoutValues, setCheckoutValues] = useState({
     name: "",
     surname: "",
@@ -13,10 +16,15 @@ export default function page() {
     zipCode: "",
   });
 
+  useEffect(() => {
+    setCheckoutValues((prev) => ({ ...prev, email: user?.email || "" }));
+  }, [user?.email]);
+
   // helper to update one field
   const handleChange = (name: string, value: string) => {
     setCheckoutValues((prev) => ({ ...prev, [name]: value }));
   };
+  
   return (
     <div className="px-[100px] mt-[72px]">
       <h1 className="text-[42px] text-myDarkBlue mb-[42px]">Checkout</h1>
@@ -67,7 +75,7 @@ export default function page() {
           </div>
         </div>
         <div className="w-[460px]">
-          <CartContent isCheckout={true} />
+          <CartContent isCheckout={true} checkoutValues={checkoutValues}/>
         </div>
       </div>
     </div>

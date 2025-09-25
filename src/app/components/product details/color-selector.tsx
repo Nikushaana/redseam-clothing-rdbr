@@ -1,16 +1,29 @@
 import React from "react";
 
 interface ColorSelectorProps {
+  isLoading: boolean;
   colors: string[] | undefined;
   value: string;
   setValue: (val: string) => void;
 }
 
-export default function ColorSelector({ colors, value, setValue }: ColorSelectorProps) {
+export default function ColorSelector({
+  isLoading,
+  colors,
+  value,
+  setValue,
+}: ColorSelectorProps) {
   return (
     <div>
       <p className="font-normal text-myDarkBlue mb-[16px]">Color: {value}</p>
       <div className="flex gap-[13px]">
+        {isLoading &&
+          [1, 2, 3, 4].map((gst) => (
+            <div
+              key={gst}
+              className="w-[48px] aspect-square rounded-full bg-myGrey"
+            ></div>
+          ))}
         {colors?.map((color) => (
           <div
             key={color}
