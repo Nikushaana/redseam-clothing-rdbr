@@ -9,6 +9,7 @@ import Card from "./components/cards/card";
 import { useUserStore } from "@/store/userStore";
 import { useRouter } from "next/navigation";
 import { axiosClient } from "@/lib/api";
+import { HiH2 } from "react-icons/hi2";
 
 export default function Home() {
   const router = useRouter();
@@ -120,16 +121,21 @@ export default function Home() {
               className="w-full rounded-[10px] h-[600px] bg-myGrey"
             ></div>
           ))}
+
         {productsData?.data.map((product) => (
           <Card key={product.id} {...product} />
         ))}
       </div>
 
-      <Pagination
-        {...productsData?.meta}
-        value={filterProductsValues.page}
-        setValue={(val: number) => handleChange("page", val)}
-      />
+      {productsData?.data && productsData?.data.length > 0 ? (
+        <Pagination
+          {...productsData?.meta}
+          value={filterProductsValues.page}
+          setValue={(val: number) => handleChange("page", val)}
+        />
+      ) : (
+        <h2 className="text-center">No Products found!</h2>
+      )}
     </div>
   );
 }
