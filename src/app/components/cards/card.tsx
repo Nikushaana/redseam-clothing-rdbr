@@ -1,21 +1,29 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function Card() {
+interface CardProps {
+  cover_image: string;
+  name: string;
+  price: number;
+  id: number;
+}
+
+export default function Card({ cover_image, name, price, id }: CardProps) {
   const router = useRouter();
   return (
-    <div onClick={() => router.push(`/product/1`)} className="cursor-pointer">
-      <div className="h-[549px] rounded-[10px] bg-myGrey overflow-hidden">
+    <div
+      onClick={() => router.push(`/product/${id}`)}
+      className="cursor-pointer"
+    >
+      <div className="h-[549px] rounded-[10px] overflow-hidden">
         <img
-          src="/images/Logo (1).png"
+          src={cover_image}
           alt="logo"
           className="w-full h-full object-contain"
         />
       </div>
-      <h2 className="text-[18px] font-medium text-myDarkBlue">
-        Kids` Curved Hilfiger Graphic T-Shirt
-      </h2>
-      <h2 className="font-medium text-myDarkBlue">$ 25</h2>
+      <h2 className="text-[18px] font-medium text-myDarkBlue">{name}</h2>
+      <h2 className="font-medium text-myDarkBlue">$ {price}</h2>
     </div>
   );
 }

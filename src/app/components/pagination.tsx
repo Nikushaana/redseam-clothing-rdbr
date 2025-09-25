@@ -3,21 +3,27 @@
 import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-export default function Pagination() {
-  const totalPages = 10; // total number of pages
-  const [currentPage, setCurrentPage] = useState(1);
+interface paginationProps {
+  value: number;
+  setValue: (val: number) => void;
+  last_page?: number;
+}
 
+export default function Pagination({
+  value,
+  setValue,
+  last_page = 1,
+}: paginationProps) {
   const getPages = (): (number | string)[] => {
     const pages: (number | string)[] = [];
 
-    if (totalPages <= 7) {
-      // Show all pages if total is small
-      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    if (last_page <= 7) {
+      for (let i = 1; i <= last_page; i++) pages.push(i);
     } else {
       const leftPages = [1, 2];
-      const rightPages = [totalPages - 1, totalPages];
-      const middleStart = Math.max(3, currentPage - 1);
-      const middleEnd = Math.min(totalPages - 2, currentPage + 1);
+      const rightPages = [last_page - 1, last_page];
+      const middleStart = Math.max(3, value - 1);
+      const middleEnd = Math.min(last_page - 2, value + 1);
 
       pages.push(...leftPages);
 
@@ -25,7 +31,7 @@ export default function Pagination() {
 
       for (let i = middleStart; i <= middleEnd; i++) pages.push(i);
 
-      if (middleEnd < totalPages - 2) pages.push("...");
+      if (middleEnd < last_page - 2) pages.push("...");
 
       pages.push(...rightPages);
     }
@@ -33,20 +39,18 @@ export default function Pagination() {
     return pages;
   };
 
-  const handlePageClick = (page: number | string) => {
-    if (typeof page === "number") {
-      setCurrentPage(page);
-    }
+  const handlePageClick = (page: number) => {
+    setValue(page);
   };
 
   return (
     <div className="flex items-center justify-center gap-[8px]">
       <IoIosArrowBack
-        onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
-        className={`cursor-pointer ${currentPage === 1 && "opacity-30"}`}
+        onClick={() => value > 1 && setValue(value - 1)}
+        className={`cursor-pointer ${value === 1 && "opacity-30"}`}
       />
       {getPages().map((page, index) => {
-        const isCurrent = page === currentPage;
+        const isCurrent = page === value;
         const isEllipsis = page === "...";
 
         return (
@@ -67,12 +71,8 @@ export default function Pagination() {
         );
       })}
       <IoIosArrowForward
-        className={`cursor-pointer ${
-          currentPage === totalPages && "opacity-30"
-        }`}
-        onClick={() =>
-          currentPage < totalPages && setCurrentPage(currentPage + 1)
-        }
+        className={`cursor-pointer ${value === last_page && "opacity-30"}`}
+        onClick={() => value < last_page && setValue(value + 1)}
       />
     </div>
   );

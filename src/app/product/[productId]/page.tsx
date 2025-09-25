@@ -5,7 +5,9 @@ import DropDown from "@/app/components/dropdown/drop-down";
 import ColorSelector from "@/app/components/product details/color-selector";
 import Images from "@/app/components/product details/images";
 import SizeSelector from "@/app/components/product details/size-selector";
-import React, { useState } from "react";
+import { axiosClient } from "@/lib/api";
+import { useUserStore } from "@/store/userStore";
+import React, { useEffect, useState } from "react";
 
 interface ProductDetailsPageProps {
   params: Promise<{
@@ -16,15 +18,38 @@ interface ProductDetailsPageProps {
 export default function Page({ params }: ProductDetailsPageProps) {
   const { productId } = React.use(params);
 
+  const user = useUserStore((state) => state.user);
+
   const [productValues, setProductValues] = useState({
     color: "",
     size: "",
     quantity: "0",
+    image: "",
   });
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [productData, setProductData] = useState<Product | null>(null);
 
   const handleChange = (name: string, value: string) => {
     setProductValues((prev) => ({ ...prev, [name]: value }));
   };
+
+  console.log(productData);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    setIsLoading(true);
+    axiosClient
+      .get(`/products/${productId}`)
+      .then((res: any) => {
+        setProductData(res.data);
+      })
+      .catch((error) => {})
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [user?.id, productId]);
 
   return (
     <div className="px-[100px] mt-[30px] mb-[90px]">
@@ -32,22 +57,30 @@ export default function Page({ params }: ProductDetailsPageProps) {
         Listing / Product
       </p>
       <div className="flex justify-between">
-        <Images />
+        <Images
+          images={productData?.images}
+          value={productValues.image}
+          setValue={(val: string) => handleChange("image", val)}
+        />
 
         <div className="w-[704px] flex flex-col gap-y-[56px]">
           <div>
             <h1 className="font-semibold text-[32px] text-myDarkBlue mb-[21px]">
-              Kids' Curved Hilfiger Graphic T-Shirt
+              {productData?.name}
             </h1>
-            <h1 className="font-semibold text-[32px] text-myDarkBlue">$ 25</h1>
+            <h1 className="font-semibold text-[32px] text-myDarkBlue">
+              $ {productData?.price}
+            </h1>
           </div>
 
           <ColorSelector
+            colors={productData?.available_colors}
             value={productValues.color}
             setValue={(val: string) => handleChange("color", val)}
           />
 
           <SizeSelector
+            sizes={productData?.available_sizes}
             value={productValues.size}
             setValue={(val: string) => handleChange("size", val)}
           />
@@ -70,19 +103,17 @@ export default function Page({ params }: ProductDetailsPageProps) {
 
               <div className="w-[109px] h-[61px]">
                 <img
-                  src="/images/Logo (1).png"
+                  src={productData?.brand?.image}
                   alt="logo"
                   className="w-full h-full object-contain"
                 />
               </div>
             </div>
             <p className="font-normal text-myDarkBlue2 mb-[19px]">
-              Brand: Tommy Hilfiger
+              Brand: {productData?.brand?.name}
             </p>
             <p className="font-normal text-myDarkBlue2">
-              This product contains regenerative cotton, which is grown using
-              farming methods that seek to improve soil health, watersheds and
-              biodiversity.
+              {productData?.description}
             </p>
           </div>
         </div>

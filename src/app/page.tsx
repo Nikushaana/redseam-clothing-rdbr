@@ -2,21 +2,66 @@
 
 import Pagination from "./components/pagination";
 import { BsXLg } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Filter from "./components/filter components/filter";
 import SortBy from "./components/filter components/sort-by";
 import Card from "./components/cards/card";
+import { useUserStore } from "@/store/userStore";
+import { useRouter } from "next/navigation";
+import { axiosClient } from "@/lib/api";
 
 export default function Home() {
+  const router = useRouter();
+  const user = useUserStore((state) => state.user);
+
+  useEffect(() => {
+    if (!user?.id) {
+      router.push("/auth/login");
+    }
+  }, [user, router]);
+
   const [filterProductsValues, setFilterProductsValues] = useState({
     from: "",
     to: "",
     sortBy: "",
+    page: 1,
   });
 
-  const handleChange = (name: string, value: string) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [productsData, setProductsData] = useState<ProductsResponse | null>(
+    null
+  );
+
+  const handleChange = (name: string, value: string | number) => {
     setFilterProductsValues((prev) => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    setFilterProductsValues((prev) =>
+      prev.page === 1 ? prev : { ...prev, page: 1 }
+    );
+  }, [
+    filterProductsValues.from,
+    filterProductsValues.to,
+    filterProductsValues.sortBy,
+  ]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    setIsLoading(true);
+    axiosClient
+      .get(
+        `/products?page=${filterProductsValues.page}&filter[price_from]=${filterProductsValues.from}&filter[price_to]=${filterProductsValues.to}&sort=${filterProductsValues.sortBy}`
+      )
+      .then((res: any) => {
+        setProductsData(res.data);
+      })
+      .catch((error) => {})
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [user?.id, filterProductsValues]);
 
   return (
     <div className="px-[100px] my-[72px]">
@@ -24,7 +69,8 @@ export default function Home() {
         <h1 className="text-[42px] font-semibold text-myDarkBlue">Products</h1>
         <div className="flex items-center gap-[32px]">
           <p className="text-myDarkBlue2 text-[12px]">
-            Showing 1-10 of 100 results
+            Showing {productsData?.meta.from ?? 0}-{productsData?.meta.to ?? 0}{" "}
+            of {productsData?.meta.total ?? 0} results
           </p>
           <p className="text-myGrey2">|</p>
           <Filter
@@ -59,16 +105,32 @@ export default function Home() {
         </div>
       )}
       <div
-        className={`grid grid-cols-4 gap-[24px] mb-[90px] ${
-          true ? "mt-[26px]" : "mt-[34px]"
+        className={`${
+          isLoading && "opacity-[0.5]"
+        } grid grid-cols-4 gap-[24px] mb-[90px] ${
+          filterProductsValues.from && filterProductsValues.to
+            ? "mt-[26px]"
+            : "mt-[34px]"
         }`}
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((product) => (
-          <Card key={product} />
+        {isLoading &&
+          !productsData?.data &&
+          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((gst) => (
+            <div
+              key={gst}
+              className="w-full rounded-[10px] h-[600px] bg-myGrey"
+            ></div>
+          ))}
+        {productsData?.data.map((product) => (
+          <Card key={product.id} {...product} />
         ))}
       </div>
 
-      <Pagination />
+      <Pagination
+        {...productsData?.meta}
+        value={filterProductsValues.page}
+        setValue={(val: number) => handleChange("page", val)}
+      />
     </div>
   );
 }

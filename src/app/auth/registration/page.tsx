@@ -4,6 +4,7 @@ import Button from "@/app/components/button";
 import Input from "@/app/components/inputs/input";
 import UploadImage from "@/app/components/inputs/upload-image";
 import { axiosClient } from "@/lib/api";
+import { useUserStore } from "@/store/userStore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -11,6 +12,8 @@ import * as Yup from "yup";
 
 export default function Page() {
   const router = useRouter();
+
+  const setUser = useUserStore((state) => state.setUser);
 
   const [registerValues, setRegisterValues] = useState({
     newImage: null as File | null,
@@ -68,9 +71,9 @@ export default function Page() {
       axiosClient
         .post("/register", formData)
         .then((res: any) => {
-          localStorage.setItem("redseamToken", res.data.token);
+          setUser(res.data.user, res.data.token);
 
-          router.push("/auth/login");
+          router.push("/");
           toast.success("user registered successfully", {
             position: "top-right",
             autoClose: 3000,

@@ -1,8 +1,9 @@
 "use client";
 
 import { useCartStore } from "@/store/cartStore";
+import { useUserStore } from "@/store/userStore";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { BsFillPersonFill } from "react-icons/bs";
 import { HiShoppingCart } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
@@ -10,6 +11,13 @@ import { IoIosArrowDown } from "react-icons/io";
 export default function Header() {
   const router = useRouter();
   const { openCart } = useCartStore();
+
+  const { user, hydrate } = useUserStore();
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
+
   return (
     <div className="px-[100px] flex items-center justify-between h-[80px]">
       <img
@@ -20,7 +28,7 @@ export default function Header() {
         alt="logo"
         className="w-[180px] h-[24px] object-contain cursor-pointer"
       />
-      {false ? (
+      {user?.id ? (
         <div className="flex items-center gap-[20px]">
           <HiShoppingCart
             onClick={openCart}
@@ -28,8 +36,7 @@ export default function Header() {
           />
           <div className="flex items-center gap-[4px] cursor-pointer">
             <img
-              onClick={() => {}}
-              src="/images/logo.PNG"
+              src={user.avatar}
               alt="logo"
               className="w-[40px] h-[40px] rounded-full object-cover"
             />
